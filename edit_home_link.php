@@ -19,8 +19,6 @@
  * Domain Path:       /languages
  */
 
-//where it came from https://wordpress.org/ideas/topic/homepage-acces
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
