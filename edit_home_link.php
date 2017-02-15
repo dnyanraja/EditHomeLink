@@ -1,10 +1,8 @@
 <?php
-
-
 /**
  * @link              ganeshveer.tk
  * @since             1.0.0
- * @package           Edit_home_link
+ * @package           Edit_homepage_link
  *
  * @wordpress-plugin
  * Plugin Name:       Edit HomePage Link
@@ -19,6 +17,8 @@
  * Domain Path:       /languages
  */
 
+//where it came from https://wordpress.org/ideas/topic/homepage-acces
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -28,32 +28,32 @@ if ( ! defined( 'WPINC' ) ) {
  // ------------------------------------------------------------------
  //
  
- function eg_settings_api_init() {
+ function ehpl_api_init() {
  	// Add the section to reading settings so we can add our
  	// fields to it
  	add_settings_section(
-		'eg_setting_section',
+		'ehpl_setting_section',
 		'Display edit link',
-		'eg_setting_section_callback_function',
+		'ehpl_setting_section_callback_function',
 		'reading'
 	);
  	
  	// Add the field with the names and function to use for our new
  	// settings, put it in our new section
  	add_settings_field(
-		'eg_setting_name',
+		'ehpl_setting_name',
 		'Home/Front page Edit link',
-		'eg_setting_callback_function',
+		'ehpl_setting_callback_function',
 		'reading',
-		'eg_setting_section'
+		'ehpl_setting_section'
 	);
  	
  	// Register our setting so that $_POST handling is done for us and
  	// our callback function just has to echo the <input>
- 	register_setting( 'reading', 'eg_setting_name' );
+ 	register_setting( 'reading', 'ehpl_setting_name' );
  } // eg_settings_api_init()
  
- add_action( 'admin_init', 'eg_settings_api_init' );
+ add_action( 'admin_init', 'ehpl_api_init' );
   
  // ------------------------------------------------------------------
  // Settings section callback function
@@ -62,7 +62,7 @@ if ( ! defined( 'WPINC' ) ) {
  // This function is needed if we added a new section. This function 
  // will be run at the start of our section
  //
-  function eg_setting_section_callback_function() {
+  function ehpl_setting_section_callback_function() {
  	echo '<p style="display:none;">&nbsp;</p>';
 	/*	if(get_option( 'eg_setting_name' )){
 			$homeid =  get_option( 'page_on_front' );
@@ -77,8 +77,8 @@ if ( ! defined( 'WPINC' ) ) {
  // ------------------------------------------------------------------
  // creates a checkbox true/false option. Other types are surely possible
  
- function eg_setting_callback_function() {
- 	echo '<input name="eg_setting_name" id="eg_setting_name" type="checkbox" value="1" class="code" ' . checked( 1, get_option( 'eg_setting_name' ), false ) . ' /> allow us to put edit link in front of "Front page" & "Posts page"';
+ function ehpl_setting_callback_function() {
+ 	echo '<input name="ehpl_setting_name" id="ehpl_setting_name" type="checkbox" value="1" class="code" ' . checked( 1, get_option( 'ehpl_setting_name' ), false ) . ' /> allow us to put edit link in front of "Front page" & "Posts page"';
  }
 
  function wpdocs_selectively_enqueue_admin_script( $hook ) {
@@ -87,11 +87,11 @@ if ( ! defined( 'WPINC' ) ) {
 	$postpid = get_option( 'page_for_posts' );
 	
     wp_enqueue_script( 'edit_home_ajax_script', plugin_dir_url( __FILE__ ) . 'edit_home_ajax.js', array(), '1.0' );
-    wp_localize_script( 'edit_home_ajax_script', 'ajax_object', 
+    wp_localize_script( 'edit_home_ajax_script', 'ehpl_obj', 
     	array( 	'ajax_url' => admin_url( 'admin-ajax.php' ),
      			'frontpage'=> $homeid, 
      			'postspage'=>$postpid,
-     			'display_edit_link' =>  get_option( 'eg_setting_name' )
+     			'display_edit_link' =>  get_option( 'ehpl_setting_name' )
      		 ));
 }
 add_action( 'admin_enqueue_scripts', 'wpdocs_selectively_enqueue_admin_script' );
@@ -102,11 +102,9 @@ add_action( 'admin_enqueue_scripts', 'wpdocs_selectively_enqueue_admin_script' )
 add_action('wp_ajax_nopriv_append_link','append_link_callback');
 add_action('wp_ajax_append_link','append_link_callback');
 function append_link_callback(){
-	ob_clean();
-	
-	$hpostid =  $_REQUEST['postid'];
+	ob_clean();	
+	$hpostid =   intval($_REQUEST['postid']);
 	$link =  get_edit_post_link($hpostid);
 	echo $link;
-
 	die();
 }
