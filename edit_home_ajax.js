@@ -1,16 +1,16 @@
 jQuery(document).ready(function($){    
 
-	// Ajax localized variables - ajax_object.ajax_url, ajax_object.frontpage, ajax_object.postspage
+	// Ajax localized variables - ehpl_obj.ajax_url, ehpl_obj.frontpage, ehpl_obj.postspage
 
-	if(ajax_object.display_edit_link){
+	if(ehpl_obj.display_edit_link){
 
-		if(ajax_object.frontpage != 0){
-			$( "#front-static-pages ul li:first-child").append("<span id='frontpage_edit'> <a href='/wp-admin/post.php?post="+ ajax_object.frontpage + "&action=edit'>edit</a></span>");
+		if(ehpl_obj.frontpage != 0){
+			$( "#front-static-pages ul li:first-child").append("<span id='frontpage_edit'> <a href='/wp-admin/post.php?post="+ ehpl_obj.frontpage + "&action=edit'>edit</a></span>");
 		}else{
 			$( "#front-static-pages ul li:first-child").append("<span id='frontpage_edit'>&nbsp;</span>");
 		}
-		if(ajax_object.postspage != 0){
-			$( "#front-static-pages ul li:nth-child(2)").append("<span id='postspage_edit'> <a href='/wp-admin/post.php?post="+ ajax_object.postspage + "&action=edit'>edit</a></span>");
+		if(ehpl_obj.postspage != 0){
+			$( "#front-static-pages ul li:nth-child(2)").append("<span id='postspage_edit'> <a href='/wp-admin/post.php?post="+ ehpl_obj.postspage + "&action=edit'>edit</a></span>");
 		}else{
 			$( "#front-static-pages ul li:nth-child(2)").append("<span id='postspage_edit'> &nbsp;</span>");
 		}
@@ -19,7 +19,7 @@ jQuery(document).ready(function($){
 		$( "#frontpage_edit").html(" Loading...");
 		var seloption = $(this).val(); //get currently selected page id
 			$.ajax({
-     			url : ajax_object.ajax_url,
+     			url : ehpl_obj.ajax_url,
 				type : 'post',
 				data :  {
 					'action' : 'append_link',
@@ -35,7 +35,7 @@ jQuery(document).ready(function($){
 		$( "#postspage_edit").html(" Loading...");
 		var seloption = $(this).val();//get currently selected page id	
     		$.ajax({
-     			url : ajax_object.ajax_url,
+     			url : ehpl_obj.ajax_url,
 				type : 'post',
 				data :  {
 					'action' : 'append_link',
