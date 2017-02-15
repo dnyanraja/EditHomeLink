@@ -23,6 +23,7 @@ jQuery(document).ready(function($){
 				type : 'post',
 				data :  {
 					'action' : 'append_link',
+					'security' : ehpl_obj.wp_nonce,
 					'postid' : seloption					
 				},
      			success: function(msg){     				
@@ -39,6 +40,7 @@ jQuery(document).ready(function($){
 				type : 'post',
 				data :  {
 					'action' : 'append_link',
+					'security' : ehpl_obj.wp_nonce,
 					'postid' : seloption					
 				},
      			success: function(msg){     				
