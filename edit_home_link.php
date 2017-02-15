@@ -85,10 +85,12 @@ if ( ! defined( 'WPINC' ) ) {
     if ( 'options-reading.php' != $hook ) {    return;    }
     $homeid =  get_option( 'page_on_front' );
 	$postpid = get_option( 'page_for_posts' );
-	
+	$ajax_nonce = wp_create_nonce( "hehpl_homeurl" );
+
     wp_enqueue_script( 'edit_home_ajax_script', plugin_dir_url( __FILE__ ) . 'edit_home_ajax.js', array(), '1.0' );
     wp_localize_script( 'edit_home_ajax_script', 'ehpl_obj', 
     	array( 	'ajax_url' => admin_url( 'admin-ajax.php' ),
+    			'wp_nonce' => 	$ajax_nonce,
      			'frontpage'=> $homeid, 
      			'postspage'=>$postpid,
      			'display_edit_link' =>  get_option( 'ehpl_setting_name' )
@@ -102,6 +104,7 @@ add_action( 'admin_enqueue_scripts', 'wpdocs_selectively_enqueue_admin_script' )
 add_action('wp_ajax_nopriv_append_link','append_link_callback');
 add_action('wp_ajax_append_link','append_link_callback');
 function append_link_callback(){
+	check_ajax_referer( 'hehpl_homeurl', 'security' );
 	ob_clean();	
 	$hpostid =   intval($_REQUEST['postid']);
 	$link =  get_edit_post_link($hpostid);
