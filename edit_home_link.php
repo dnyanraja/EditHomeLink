@@ -81,7 +81,7 @@ if ( ! defined( 'WPINC' ) ) {
  	echo '<input name="ehpl_setting_name" id="ehpl_setting_name" type="checkbox" value="1" class="code" ' . checked( 1, get_option( 'ehpl_setting_name' ), false ) . ' /> allow us to put edit link in front of "Front page" & "Posts page"';
  }
 
- function wpdocs_selectively_enqueue_admin_script( $hook ) {
+ function ehpl_enqueue_admin_script( $hook ) {
     if ( 'options-reading.php' != $hook ) {    return;    }
     $homeid =  get_option( 'page_on_front' );
 	$postpid = get_option( 'page_for_posts' );
@@ -96,14 +96,14 @@ if ( ! defined( 'WPINC' ) ) {
      			'display_edit_link' =>  get_option( 'ehpl_setting_name' )
      		 ));
 }
-add_action( 'admin_enqueue_scripts', 'wpdocs_selectively_enqueue_admin_script' );
+add_action( 'admin_enqueue_scripts', 'ehpl_enqueue_admin_script' );
 
 // --------------------------------
 // 			AJAX FUNCTION 
 //---------------------------------
-add_action('wp_ajax_nopriv_append_link','append_link_callback');
-add_action('wp_ajax_append_link','append_link_callback');
-function append_link_callback(){
+add_action('wp_ajax_nopriv_append_link','ehpl_append_link_callback');
+add_action('wp_ajax_append_link','ehpl_append_link_callback');
+function ehpl_append_link_callback(){
 	check_ajax_referer( 'hehpl_homeurl', 'security' );
 	ob_clean();	
 	$hpostid =   intval($_REQUEST['postid']);
